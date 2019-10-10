@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styles from './calendar.module.css'
 import Day from './day'
+import Reminder from './reminder'
 
 class Calendar extends React.Component {
   renderDays = () => {
@@ -23,6 +24,8 @@ class Calendar extends React.Component {
   }
 
   render() {
+    const { showModal } = this.props
+
     return (
       <>
         <div className={styles.container}>
@@ -43,6 +46,9 @@ class Calendar extends React.Component {
             </tbody>
           </table>
         </div>
+        {showModal && (
+          <Reminder />
+        )}
       </>
     )
   }
@@ -50,10 +56,12 @@ class Calendar extends React.Component {
 
 Calendar.propTypes = {
   month: PropTypes.arrayOf(PropTypes.array).isRequired,
+  showModal: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => ({
+  showModal: state.calendar.showModal,
   month: state.calendar.month,
 })
 
-export default connect(mapStateToProps, null)(Calendar)
+export default connect(mapStateToProps)(Calendar)

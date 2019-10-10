@@ -1,69 +1,42 @@
-const initialState = {
-  month: [
-    [
-      { number: 30, disabled: true },
-      { number: 31, disabled: true },
-      {
-        number: 1,
-        reminders: [{
-          id: 1, note: 'test', time: '12:00', color: 'red',
-        }],
-      },
-      { number: 2 },
-      { number: 3 },
-      { number: 4 },
-      { number: 5 },
-    ],
-    [
-      { number: 6 },
-      {
-        number: 7,
-        reminders: [{
-          id: 2, note: 'test', time: '12:00', color: 'blue',
-        }, {
-          id: 3, note: 'test2', time: '12:00', color: 'orange',
-        }],
-      },
-      { number: 8 },
-      { number: 9 },
-      { number: 10 },
-      { number: 11 },
-      { number: 12 },
-    ],
-    [
-      { number: 13 },
-      { number: 14 },
-      { number: 15 },
-      { number: 16 },
-      { number: 17 },
-      { number: 18 },
-      { number: 19 },
-    ],
-    [
-      { number: 20 },
-      { number: 21 },
-      { number: 22 },
-      { number: 23 },
-      { number: 24 },
-      { number: 25 },
-      { number: 26 },
-    ],
-    [
-      { number: 27 },
-      { number: 28 },
-      { number: 29 },
-      { number: 30 },
-      { number: 31 },
-      { number: 1, disabled: true },
-      { number: 2, disabled: true },
-    ],
-  ],
-}
+import initialState from './initialValues'
+import * as ACTION from './consts'
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'TEST':
-      return state
+    case ACTION.SELECT_DAY:
+      return {
+        ...state,
+        selectedDay: action.payload,
+      }
+    case ACTION.SHOW_MODAL:
+      return {
+        ...state,
+        showModal: !state.showModal,
+      }
+    case ACTION.ADD_REMINDER: {
+      const { note, time, color } = action.payload
+      const month = state.month.map((row) => row.map((cell) => {
+        if (cell.number === state.selectedDay) {
+          const reminders = cell.reminders || []
+          reminders.push({
+            id: new Date().getTime(),
+            note,
+            time,
+            color,
+          })
+
+          return {
+            ...cell,
+            reminders,
+          }
+        }
+        return cell
+      }))
+      return {
+        ...state,
+        month,
+      }
+    }
     default:
       return state
   }

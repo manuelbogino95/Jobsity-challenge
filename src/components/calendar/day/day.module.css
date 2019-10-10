@@ -1,10 +1,11 @@
 .container {
   width: 150px;
   height: 150px;
+  overflow: scroll;
 }
 
 .container:hover {
-  background: #f1f1f1;
+  background-color: #F1F1F1;
   cursor: pointer;
 }
 
@@ -17,4 +18,19 @@
 td {
   border: 2px solid #959595;
   padding: 0px;
+}
+
+.reminderContainer {
+  padding: 2px;
+}
+
+.reminder {
+  color: #fff;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 7px;
+}
+
+.reminderInfo {
+  overflow: auto;
 }

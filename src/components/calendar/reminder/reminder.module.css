@@ -1,0 +1,73 @@
+.modal {
+  position: fixed;
+  z-index: 1;
+  padding-top: 250px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modalContent {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #000;
+  width: 25%;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modalHeader {
+  margin-top: 30px;
+  margin-bottom: 10px
+}
+
+.fieldContainer {
+  margin-bottom: 15px;
+}
+
+.fieldContainer > div {
+  width: 100%;
+}
+
+input {
+  width: 100%;
+  padding: 4px;
+}
+
+.closeButton {
+  color: #959595;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closeButton:hover,
+.closeButton:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modalFooter {
+  width: 60%;
+  margin-top: 15px;
+}
+
+.modalFooter button {
+  width: 50%;
+  font-size: 12px;
+  padding: 2px;
+}
+
+.saveButton {
+  color: #fff;
+  background-color: #3e6bae;
+}
