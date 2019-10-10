@@ -1,17 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { testAction } from '../redux/actions'
+import testAction from '../redux/actions'
 import styles from './app.module.css'
 import Calendar from './calendar'
 
-const App = (props) => (
+const App = () => (
   <div className={styles.container}>
     <Calendar />
   </div>
 )
 
 const mapDispatchToProps = (dispatch) => ({
-  test: () => dispatch(testAction())
+  test: () => dispatch(testAction()),
 })
 
 export default connect(null, mapDispatchToProps)(App)

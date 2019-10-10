@@ -1,27 +1,30 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styles from './calendar.module.css'
 import Day from './day'
 
 class Calendar extends React.Component {
-
   renderDays = () => {
-    return this.props.month.map((row, i) => {
-      return (
-        <tr key={i}>
-          {row.map((day, index) => <Day
-            key={index} day={day}
+    const { month } = this.props
+
+    return month.map((row, i) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <tr key={i}>
+        {row.map((day, index) => (
+          <Day
+            key={day.number}
+            day={day}
             weekend={index === 0 || index === 6}
-          />)}
-        </tr>
-      )
-    })
+          />
+        ))}
+      </tr>
+    ))
   }
 
   render() {
-
     return (
-      <React.Fragment>
+      <>
         <div className={styles.container}>
           <table>
             <thead>
@@ -40,10 +43,13 @@ class Calendar extends React.Component {
             </tbody>
           </table>
         </div>
-      </React.Fragment>
+      </>
     )
   }
+}
 
+Calendar.propTypes = {
+  month: PropTypes.arrayOf(PropTypes.array).isRequired,
 }
 
 const mapStateToProps = (state) => ({

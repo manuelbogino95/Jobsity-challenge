@@ -1,3 +1,5 @@
-export const testAction = () => ({
+const testAction = () => ({
   type: 'TEST',
 })
+
+export default testAction

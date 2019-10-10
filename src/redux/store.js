@@ -1,9 +1,9 @@
 import { createStore, combineReducers } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension'
 import calendarReducer from './reducer'
 
 const reducers = {
-  calendar: calendarReducer
+  calendar: calendarReducer,
 }
 
 const reducer = combineReducers(reducers)
