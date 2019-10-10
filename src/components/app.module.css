@@ -3,7 +3,7 @@ html, body {
   margin: 0;
 }
 
-.app-container {
-  padding: 0;
+.container {
+  padding: 10px;
   margin: 0;
 }

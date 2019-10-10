@@ -1,0 +1,20 @@
+.container {
+  width: 150px;
+  height: 150px;
+}
+
+.container:hover {
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+.number {
+  font-size: 16px;
+  margin: 0;
+  padding: 5px;
+}
+
+td {
+  border: 2px solid #959595;
+  padding: 0px;
+}

@@ -1,14 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { testAction } from '../redux/actions'
-import './styles.css'
+import styles from './app.module.css'
+import Calendar from './calendar'
 
 const App = (props) => (
-  <div className="app-container">
-    Hello World!
-    <button onClick={props.test}>
-      test Action
-    </button>
+  <div className={styles.container}>
+    <Calendar />
   </div>
 )
 
