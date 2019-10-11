@@ -27,16 +27,21 @@ class Day extends React.Component {
     const { day: { reminders } } = this.props
     if (reminders) {
       return reminders.map((reminder) => (
-        <div className={styles.reminderContainer}>
+        <div key={reminder.id} className={styles.reminderContainer}>
           <button
             className={styles.reminder}
-            key={reminder.id}
             type="button"
             style={{ backgroundColor: reminder.color }}
             onClick={(e) => this.onClickReminder(e, reminder.id)}
           >
             <div className={styles.reminderInfo}>{reminder.time && moment(reminder.time.getTime()).format('HH:mm a')}</div>
             <div className={styles.reminderInfo}>{reminder.note}</div>
+            <div className={styles.reminderInfo}>{reminder.city}</div>
+            {
+              reminder.reminderWeather ? (
+                <img alt="asd" src={`https://openweathermap.org/img/w/${reminder.reminderWeather.icon}.png`} />
+              ) : null
+            }
           </button>
         </div>
       ))
@@ -52,7 +57,7 @@ class Day extends React.Component {
     } = this.props
 
     return (
-      <td>
+      <td key={number}>
         <div
           role="button"
           tabIndex="0"

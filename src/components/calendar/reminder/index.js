@@ -10,6 +10,7 @@ import {
   addReminder as addReminderAction,
   editReminder as editReminderAction,
   showModal as showModalAction,
+  getWeather as getWeatherAction,
 } from '../../../redux/actions'
 
 class Reminder extends React.Component {
@@ -57,8 +58,21 @@ class Reminder extends React.Component {
     />
   )
 
+  renderDropDown = ({
+    input,
+    options,
+  }) => (
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <select {...input}>
+      <option value="">Select</option>
+      { options.map((option) => (
+        <option key={option} value={option}>{option}</option>
+      ))}
+    </select>
+  )
+
   render() {
-    const { showModal, handleSubmit } = this.props
+    const { showModal, handleSubmit, cities } = this.props
 
     return (
       <div className={styles.modal}>
@@ -95,6 +109,14 @@ class Reminder extends React.Component {
               </div>
               <div className={styles.fieldContainer}>
                 <Field
+                  name="city"
+                  className={styles.dropDown}
+                  component={this.renderDropDown}
+                  options={cities}
+                />
+              </div>
+              <div className={styles.fieldContainer}>
+                <Field
                   name="color"
                   component={this.renderColorPicker}
                 />
@@ -119,6 +141,7 @@ Reminder.propTypes = {
   showModal: PropTypes.func.isRequired,
   addReminder: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  cities: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -127,6 +150,7 @@ const mapStateToProps = (state) => {
     formValues: getFormValues('reminder')(state),
     initialValues: reminder,
     number,
+    cities: state.calendar.cities,
   }
 }
 
@@ -134,6 +158,7 @@ const mapDispatchToProps = (dispatch) => ({
   addReminder: (reminder) => dispatch(addReminderAction(reminder)),
   editReminder: (reminder, number) => dispatch(editReminderAction(reminder, number)),
   showModal: () => dispatch(showModalAction()),
+  getWeather: (city) => dispatch(getWeatherAction(city)),
 })
 
 const onSubmit = (values, dispatch, props) => {
@@ -141,6 +166,7 @@ const onSubmit = (values, dispatch, props) => {
     addReminder,
     editReminder,
     showModal,
+    getWeather,
     number,
   } = props
 
@@ -150,6 +176,7 @@ const onSubmit = (values, dispatch, props) => {
     editReminder({ ...values }, number)
   }
   showModal()
+  getWeather(values.city)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({

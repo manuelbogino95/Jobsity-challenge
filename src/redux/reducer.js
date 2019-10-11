@@ -16,16 +16,22 @@ const reducer = (state = initialState, action) => {
         showModal: !state.showModal,
       }
     case ACTION.ADD_REMINDER: {
-      const { note, time, color } = action.payload
+      const {
+        note, time, color, city,
+      } = action.payload
+      let newReminder
       const month = state.month.map((row) => row.map((cell) => {
         if (cell.number === state.selectedDay) {
           const reminders = cell.reminders || []
-          reminders.push({
+          newReminder = {
             id: new Date().getTime(),
             note,
             time,
             color,
-          })
+            city,
+          }
+          reminders.push(newReminder)
+          newReminder.number = state.selectedDay
           reminders.sort((a, b) => parseFloat(moment(a.time.getTime()).format('HH:mm a')) - parseFloat(moment(b.time.getTime()).format('HH:mm a')))
 
           return {
@@ -38,14 +44,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         month,
+        lastReminder: newReminder,
       }
     }
     case ACTION.EDIT_REMINDER: {
+      let editReminder
       const month = state.month.map((row) => row.map((cell) => {
         if (cell.number === action.payload.number) {
           const reminders = cell.reminders || []
           const reminderIndex = reminders.findIndex((r) => r.id === action.payload.reminder.id)
-          reminders[reminderIndex] = action.payload.reminder
+          editReminder = action.payload.reminder
+          reminders[reminderIndex] = editReminder
           reminders.sort((a, b) => parseFloat(moment(a.time.getTime()).format('HH:mm a')) - parseFloat(moment(b.time.getTime()).format('HH:mm a')))
 
           return {
@@ -59,6 +68,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         month,
+        lastReminder: editReminder,
       }
     }
     case ACTION.SELECT_REMINDER: {
@@ -71,6 +81,41 @@ const reducer = (state = initialState, action) => {
           reminder,
           number: action.payload.number,
         },
+      }
+    }
+    case ACTION.GET_WEATHER_SUCCESS: {
+      const reminderWeather = action.payload.list.map((weatherList) => {
+        const weather = weatherList.weather.shift()
+        return {
+          date: moment(weatherList.dt_txt).format('DD/MM/YYYY'),
+          icon: weather.icon,
+          description: weather.description,
+        }
+      }).find((forecast) => (
+        forecast.date === `${state.lastReminder.number}/10/2019`
+      ))
+
+      const month = state.month.map((row) => row.map((cell) => {
+        if (cell.number === state.lastReminder.number) {
+          const reminders = cell.reminders || []
+          const reminderIndex = reminders.findIndex((r) => r.id === state.lastReminder.id)
+          const reminderWithWeather = {
+            ...reminders[reminderIndex],
+            reminderWeather,
+          }
+          reminders[reminderIndex] = reminderWithWeather
+
+          return {
+            ...cell,
+            reminders,
+          }
+        }
+        return cell
+      }))
+
+      return {
+        ...state,
+        month,
       }
     }
     default:

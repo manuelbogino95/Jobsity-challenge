@@ -2,6 +2,7 @@ const initialState = {
   showModal: false,
   selectedDay: undefined,
   selectedReminder: {},
+  lastReminder: {},
   month: [
     [
       { number: 30, disabled: true },
@@ -48,6 +49,16 @@ const initialState = {
       { number: 1, disabled: true },
       { number: 2, disabled: true },
     ],
+  ],
+  cities: [
+    'Bogota,CO',
+    'Cartagena,CO',
+    'Lima,PE',
+    'London,GB',
+    'Miami Beach,US',
+    'New York,US',
+    'Quito,EC',
+    'Roma,IT',
   ],
 }
 

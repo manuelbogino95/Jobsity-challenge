@@ -14,7 +14,8 @@ class Calendar extends React.Component {
       <tr key={i}>
         {row.map((day, index) => (
           <Day
-            key={day.number}
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
             day={day}
             weekend={index === 0 || index === 6}
           />

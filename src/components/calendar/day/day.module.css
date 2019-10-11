@@ -28,6 +28,12 @@ td {
   width: 100%;
 }
 
+.reminderContainer button:hover {
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.4s ease 0s;
+}
+
 .reminder {
   color: #fff;
   padding: 10px;
