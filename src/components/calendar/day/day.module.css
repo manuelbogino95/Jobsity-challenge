@@ -24,6 +24,10 @@ td {
   padding: 2px;
 }
 
+.reminderContainer button {
+  width: 100%;
+}
+
 .reminder {
   color: #fff;
   padding: 10px;

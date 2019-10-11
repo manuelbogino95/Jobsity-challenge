@@ -1,16 +1,12 @@
 const initialState = {
   showModal: false,
   selectedDay: undefined,
+  selectedReminder: {},
   month: [
     [
       { number: 30, disabled: true },
       { number: 31, disabled: true },
-      {
-        number: 1,
-        reminders: [{
-          id: 1, note: 'test', time: '12:00', color: 'red',
-        }],
-      },
+      { number: 1 },
       { number: 2 },
       { number: 3 },
       { number: 4 },
@@ -18,14 +14,7 @@ const initialState = {
     ],
     [
       { number: 6 },
-      {
-        number: 7,
-        reminders: [{
-          id: 2, note: 'test', time: '12:00', color: 'blue',
-        }, {
-          id: 3, note: 'test2', time: '12:00', color: 'orange',
-        }],
-      },
+      { number: 7 },
       { number: 8 },
       { number: 9 },
       { number: 10 },

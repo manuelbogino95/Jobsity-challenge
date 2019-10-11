@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import { connect } from 'react-redux'
 import {
   showModal as showModalAction,
   selectDay as selectDayAction,
+  selectReminder as selectReminderAction,
 } from '../../../redux/actions'
 import styles from './day.module.css'
 
@@ -14,21 +16,28 @@ class Day extends React.Component {
     selectDay(day.number)
   }
 
+  onClickReminder = (e, id) => {
+    e.stopPropagation()
+    const { selectReminder, showModal, day: { number } } = this.props
+    selectReminder(id, number)
+    showModal()
+  }
+
   renderReminders = () => {
     const { day: { reminders } } = this.props
     if (reminders) {
       return reminders.map((reminder) => (
         <div className={styles.reminderContainer}>
-          <div
-            key={reminder.id}
+          <button
             className={styles.reminder}
-            tabIndex="0"
-            role="button"
+            key={reminder.id}
+            type="button"
             style={{ backgroundColor: reminder.color }}
+            onClick={(e) => this.onClickReminder(e, reminder.id)}
           >
-            <div className={styles.reminderInfo}>{reminder.time}</div>
+            <div className={styles.reminderInfo}>{reminder.time && moment(reminder.time.getTime()).format('HH:mm a')}</div>
             <div className={styles.reminderInfo}>{reminder.note}</div>
-          </div>
+          </button>
         </div>
       ))
     }
@@ -71,11 +80,13 @@ Day.propTypes = {
   weekend: PropTypes.bool.isRequired,
   showModal: PropTypes.func.isRequired,
   selectDay: PropTypes.func.isRequired,
+  selectReminder: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = (dispatch) => ({
   showModal: () => dispatch(showModalAction()),
   selectDay: (number) => dispatch(selectDayAction(number)),
+  selectReminder: (id, number) => dispatch(selectReminderAction(id, number)),
 })
 
 export default connect(null, mapDispatchToProps)(Day)

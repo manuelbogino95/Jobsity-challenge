@@ -1,8 +1,21 @@
 import * as ACTION from './consts'
 
-export const addReminderAction = (reminder) => ({
+export const addReminder = (reminder) => ({
   type: ACTION.ADD_REMINDER,
   payload: reminder,
+})
+
+export const editReminder = (reminder, number) => ({
+  type: ACTION.EDIT_REMINDER,
+  payload: {
+    reminder,
+    number,
+  },
+})
+
+export const selectReminder = (id, number) => ({
+  type: ACTION.SELECT_REMINDER,
+  payload: { id, number },
 })
 
 export const showModal = () => ({

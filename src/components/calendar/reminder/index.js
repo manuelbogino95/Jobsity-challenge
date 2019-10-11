@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import moment from 'moment'
 import { reduxForm, Field, getFormValues } from 'redux-form'
 import DatePicker from 'react-datepicker'
 import { CirclePicker } from 'react-color'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './reminder.module.css'
 import {
-  addReminderAction,
+  addReminder as addReminderAction,
+  editReminder as editReminderAction,
   showModal as showModalAction,
 } from '../../../redux/actions'
 
@@ -28,7 +28,7 @@ class Reminder extends React.Component {
     />
   )
 
-  renderDateTimePicker = ({
+  renderTimePicker = ({
     input,
     placeholder,
   }) => (
@@ -42,7 +42,7 @@ class Reminder extends React.Component {
       showTimeSelectOnly
       timeIntervals={15}
       timeCaption="Time"
-      dateFormat="hh:mm"
+      dateFormat="hh:mm a"
     />
   )
 
@@ -88,8 +88,8 @@ class Reminder extends React.Component {
               </div>
               <div className={styles.fieldContainer}>
                 <Field
-                  name="date"
-                  component={this.renderDateTimePicker}
+                  name="time"
+                  component={this.renderTimePicker}
                   placeholder="Reminder Time"
                 />
               </div>
@@ -121,18 +121,34 @@ Reminder.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = (state) => ({
-  formValues: getFormValues('reminder')(state),
-})
+const mapStateToProps = (state) => {
+  const { reminder, number } = state.calendar.selectedReminder
+  return {
+    formValues: getFormValues('reminder')(state),
+    initialValues: reminder,
+    number,
+  }
+}
 
 const mapDispatchToProps = (dispatch) => ({
   addReminder: (reminder) => dispatch(addReminderAction(reminder)),
+  editReminder: (reminder, number) => dispatch(editReminderAction(reminder, number)),
   showModal: () => dispatch(showModalAction()),
 })
 
 const onSubmit = (values, dispatch, props) => {
-  const { addReminder, showModal } = props
-  addReminder({ ...values, time: moment(values.date).format('HH.mm') })
+  const {
+    addReminder,
+    editReminder,
+    showModal,
+    number,
+  } = props
+
+  if (!values.id) {
+    addReminder({ ...values })
+  } else {
+    editReminder({ ...values }, number)
+  }
   showModal()
 }
 
