@@ -24,6 +24,7 @@ const reducer = (state = initialState, action) => {
             time,
             color,
           })
+          reminders.sort((a, b) => parseFloat(a.time) - parseFloat(b.time))
 
           return {
             ...cell,
