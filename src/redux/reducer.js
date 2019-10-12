@@ -71,6 +71,42 @@ const reducer = (state = initialState, action) => {
         lastReminder: editReminder,
       }
     }
+    case ACTION.DELETE_REMINDER: {
+      const month = state.month.map((row) => row.map((cell) => {
+        if (cell.number === action.payload.number) {
+          const reminders = cell.reminders || []
+          const newReminders = reminders.filter((r) => r.id !== action.payload.id)
+          reminders.sort((a, b) => parseFloat(moment(a.time.getTime()).format('HH:mm a')) - parseFloat(moment(b.time.getTime()).format('HH:mm a')))
+
+          return {
+            ...cell,
+            reminders: newReminders,
+          }
+        }
+        return cell
+      }))
+
+      return {
+        ...state,
+        month,
+      }
+    }
+    case ACTION.DELETE_ALL_REMINDERS: {
+      const month = state.month.map((row) => row.map((cell) => {
+        if (cell.number === action.payload.number) {
+          return {
+            ...cell,
+            reminders: [],
+          }
+        }
+        return cell
+      }))
+
+      return {
+        ...state,
+        month,
+      }
+    }
     case ACTION.SELECT_REMINDER: {
       const day = state.month.flat().find((d) => d.number === action.payload.number)
       const reminder = day.reminders.find((r) => r.id === action.payload.id)

@@ -13,6 +13,16 @@ export const editReminder = (reminder, number) => ({
   },
 })
 
+export const deleteReminder = (id, number) => ({
+  type: ACTION.DELETE_REMINDER,
+  payload: { id, number },
+})
+
+export const deleteAllReminders = (number) => ({
+  type: ACTION.DELETE_ALL_REMINDERS,
+  payload: { number },
+})
+
 export const selectReminder = (id, number) => ({
   type: ACTION.SELECT_REMINDER,
   payload: { id, number },

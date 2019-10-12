@@ -9,6 +9,7 @@ import styles from './reminder.module.css'
 import {
   addReminder as addReminderAction,
   editReminder as editReminderAction,
+  deleteReminder as deleteReminderAction,
   showModal as showModalAction,
   getWeather as getWeatherAction,
 } from '../../../redux/actions'
@@ -71,8 +72,16 @@ class Reminder extends React.Component {
     </select>
   )
 
+  deleteReminderClick = () => {
+    const { deleteReminder, showModal, selectedReminder } = this.props
+    deleteReminder(selectedReminder.id, selectedReminder.number)
+    showModal()
+  }
+
   render() {
-    const { showModal, handleSubmit, cities } = this.props
+    const {
+      showModal, handleSubmit, cities, selectedReminder,
+    } = this.props
 
     return (
       <div className={styles.modal}>
@@ -130,6 +139,13 @@ class Reminder extends React.Component {
                 Save
               </button>
             </div>
+            {
+              selectedReminder && selectedReminder.id ? (
+                <button className={styles.deleteButton} type="button" onClick={this.deleteReminderClick}>
+                  Eliminar
+                </button>
+              ) : null
+            }
           </div>
         </div>
       </div>
@@ -137,11 +153,20 @@ class Reminder extends React.Component {
   }
 }
 
+Reminder.defaultProps = {
+  selectedReminder: {},
+}
+
 Reminder.propTypes = {
   showModal: PropTypes.func.isRequired,
   addReminder: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  deleteReminder: PropTypes.func.isRequired,
   cities: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedReminder: PropTypes.shape({
+    id: PropTypes.number,
+    number: PropTypes.number,
+  }),
 }
 
 const mapStateToProps = (state) => {
@@ -151,12 +176,14 @@ const mapStateToProps = (state) => {
     initialValues: reminder,
     number,
     cities: state.calendar.cities,
+    selectedReminder: reminder,
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   addReminder: (reminder) => dispatch(addReminderAction(reminder)),
   editReminder: (reminder, number) => dispatch(editReminderAction(reminder, number)),
+  deleteReminder: (id, number) => dispatch(deleteReminderAction(id, number)),
   showModal: () => dispatch(showModalAction()),
   getWeather: (city) => dispatch(getWeatherAction(city)),
 })

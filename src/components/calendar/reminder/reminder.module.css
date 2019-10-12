@@ -71,3 +71,11 @@ input, select {
   color: #fff;
   background-color: #3e6bae;
 }
+
+.deleteButton {
+  background-color: #ff0000;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px;
+  margin-top: 10px;
+}

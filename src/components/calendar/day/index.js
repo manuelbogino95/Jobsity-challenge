@@ -6,6 +6,7 @@ import {
   showModal as showModalAction,
   selectDay as selectDayAction,
   selectReminder as selectReminderAction,
+  deleteAllReminders as deleteAllRemindersAction,
 } from '../../../redux/actions'
 import styles from './day.module.css'
 
@@ -21,6 +22,12 @@ class Day extends React.Component {
     const { selectReminder, showModal, day: { number } } = this.props
     selectReminder(id, number)
     showModal()
+  }
+
+  onClickDeleteReminders = (e) => {
+    e.stopPropagation()
+    const { deleteAllReminders, day: { number } } = this.props
+    deleteAllReminders(number)
   }
 
   renderReminders = () => {
@@ -52,7 +59,7 @@ class Day extends React.Component {
 
   render() {
     const {
-      day: { number, disabled },
+      day: { number, disabled, reminders },
       weekend,
     } = this.props
 
@@ -67,6 +74,13 @@ class Day extends React.Component {
           style={{ backgroundColor: weekend && '#F1F1F1' }}
         >
           <h1 style={{ color: disabled && 'gray' }} className={styles.number}>{number}</h1>
+          {
+            reminders && reminders.length > 0 ? (
+              <div className={styles.deleteDuttonContainer}>
+                <button className={styles.deleteButton} type="button" onClick={(e) => this.onClickDeleteReminders(e)}>Delete all</button>
+              </div>
+            ) : null
+          }
           <div>
             {this.renderReminders()}
           </div>
@@ -86,12 +100,14 @@ Day.propTypes = {
   showModal: PropTypes.func.isRequired,
   selectDay: PropTypes.func.isRequired,
   selectReminder: PropTypes.func.isRequired,
+  deleteAllReminders: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = (dispatch) => ({
   showModal: () => dispatch(showModalAction()),
   selectDay: (number) => dispatch(selectDayAction(number)),
   selectReminder: (id, number) => dispatch(selectReminderAction(id, number)),
+  deleteAllReminders: (number) => dispatch(deleteAllRemindersAction(number)),
 })
 
 export default connect(null, mapDispatchToProps)(Day)

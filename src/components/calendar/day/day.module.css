@@ -44,3 +44,14 @@ td {
 .reminderInfo {
   overflow: auto;
 }
+
+.deleteDuttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.deleteButton {
+  background-color: #ff0000;
+  padding: 4px;
+  color: #fff;
+}
